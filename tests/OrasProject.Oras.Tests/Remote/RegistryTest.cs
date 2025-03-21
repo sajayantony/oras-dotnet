@@ -55,10 +55,12 @@ public class RegistryTest
     public async Task PingAsync()
     {
         var V2Implemented = true;
-        var func = (HttpRequestMessage req, CancellationToken cancellationToken) =>
+        HttpResponseMessage func(HttpRequestMessage req, CancellationToken cancellationToken)
         {
-            var res = new HttpResponseMessage();
-            res.RequestMessage = req;
+            var res = new HttpResponseMessage
+            {
+                RequestMessage = req
+            };
 
             if (req.Method != HttpMethod.Get && req.RequestUri?.AbsolutePath == $"/v2/")
             {
@@ -76,7 +78,7 @@ public class RegistryTest
                 res.StatusCode = HttpStatusCode.NotFound;
                 return res;
             }
-        };
+        }
         var registry = new Registry.Remote.Registry(new RepositoryOptions()
         {
             Reference = new Reference("localhost:5000"),
@@ -104,10 +106,12 @@ public class RegistryTest
             new() {"jumps", "over", "the", "lazy"},
             new() {"dog"}
         };
-        var func = (HttpRequestMessage req, CancellationToken cancellationToken) =>
+        HttpResponseMessage func(HttpRequestMessage req, CancellationToken cancellationToken)
         {
-            var res = new HttpResponseMessage();
-            res.RequestMessage = req;
+            var res = new HttpResponseMessage
+            {
+                RequestMessage = req
+            };
             if (req.Method != HttpMethod.Get ||
                 req.RequestUri?.AbsolutePath != "/v2/_catalog"
                )
@@ -151,7 +155,7 @@ public class RegistryTest
             res.Content = new StringContent(JsonSerializer.Serialize(repositoryList));
             return res;
 
-        };
+        }
 
         var registry = new Registry.Remote.Registry(new RepositoryOptions()
         {
