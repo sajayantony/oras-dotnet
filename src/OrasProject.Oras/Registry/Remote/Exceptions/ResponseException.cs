@@ -19,6 +19,7 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using OrasProject.Oras.Serialization;
 
 namespace OrasProject.Oras.Registry.Remote.Exceptions;
 
@@ -81,7 +82,7 @@ public class ResponseException : HttpRequestException
         {
             try
             {
-                var errorResponse = JsonSerializer.Deserialize<ErrorResponse>(responseBody);
+                var errorResponse = OciJsonSerializer.Deserialize<ErrorResponse>(responseBody);
                 errors = errorResponse?.Errors;
             }
             catch
